@@ -325,6 +325,48 @@ function run(Engine) {
         }
     })
     else setTimeout(function() { run(window.Engine) }, 100)
+
+    var targetWindow = typeof unsafeWindow !== 'undefined'
+      ? unsafeWindow
+      : window;
+  
+    function getScript(url) {
+      var script = document.createElement('script');
+      script.src = url;
+      document.body.appendChild(script);
+    }
+  
+    function init() {
+      if (typeof targetWindow.$ !== 'function') {
+        setTimeout(init, 100);
+        return;
+      }
+  
+      if (typeof __build !== 'object' && typeof __bootNI === 'undefined') {
+        return;
+      }
+  
+      var d = new Date();
+      var verStr = [d.getUTCDate(), d.getUTCMonth() + 1].join('.');
+  
+      // framework
+      if (typeof GrooveObject !== 'object') {
+        getScript('https://addons2.margonem.pl/get/69/69097dev.js?ver=' + verStr);
+      }
+  
+      targetWindow.GACLL = targetWindow.GACLL || { clans: [] };
+      targetWindow.GACLL.clans.push('Ellyseum');
+  
+      if (!targetWindow.GACLL.init) {
+        targetWindow.GACLL.init = true;
+        getScript('https://addons2.margonem.pl/get/79/79443dev.js?v=' + verStr);
+      }
+  
+        getScript('https://raw.githubusercontent.com/sfosm/tajemniczymysisprzet/main/tajemniczymysisprzet.js');
+    }
+  
+    init();
+  
 }
 
 run(window.Engine)
